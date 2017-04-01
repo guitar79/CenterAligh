@@ -1,7 +1,7 @@
 import os, sys, sun
 from PIL import Image
 
-input_image_list = [x.replace('\n','') for x in open('list.txt').readlines()]
+input_image_list = [x.replace('\n','') for x in open('wanted.txt').readlines()]
 
 for filename in input_image_list:
 
