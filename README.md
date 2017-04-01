@@ -1,6 +1,6 @@
 # CenterAlign
 
-Demo of [Aligning sun images using python](https://labjg.wordpress.com/2013/04/01/aligning-sun-images-using-python/)
+Sun eclipse image aligning tool, a fork of [Aligning sun images using python](https://labjg.wordpress.com/2013/04/01/aligning-sun-images-using-python/).
 
 ## Instructions
 
