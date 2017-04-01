@@ -1,9 +1,11 @@
 import os, sys, sun
 from PIL import Image
 
-input_image_list = [x.replace('\n','') for x in open('wanted.txt').readlines()]
+input_image_list = os.listdir('img/in/')
 
 for filename in input_image_list:
+	if(filename[-4:] != '.JPG'): # skip file if it's not image file
+		continue
 
 	infile = 'img/in/' + filename
 	outfile = 'img/out/' + filename
