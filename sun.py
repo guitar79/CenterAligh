@@ -3,12 +3,12 @@ from PIL import Image, ImageOps
 
 def thresh1(x): #zero threshold for finding sunspots
 	if x < 60:
-	x = 0
+		x = 0
 	return x
 
 def thresh2(x): #zero threshold for cropping around sun
 	if x < 128:
-	x = 0
+		x = 0
 	return x
 
 def bbcrop(image, border):
