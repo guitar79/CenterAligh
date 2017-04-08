@@ -13,3 +13,8 @@ Sun eclipse image aligning tool, a fork of [Aligning sun images using python](ht
 
 - Processed images are saved to `img/out/`.
 - List of images that made an error are saved to `errorlog.txt`.
+
+## Download Smaple eclipse images from my NAS
+ http://parksparks.iptime.org:500/fbsharing/Ht8sDf94
+ 
+ 
