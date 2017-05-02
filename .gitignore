@@ -1,6 +1,5 @@
 # Images
-img/in/*
-img/out/*
+img/*
 
 # Log files
 errorlog.txt

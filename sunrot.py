@@ -3,6 +3,8 @@ from PIL import Image, ImageOps
 from scipy import ndimage
 import numpy as np
 
+f = open("errorlog.txt","a")
+
 def findspot(cboxctr, cboxsize, shrinkboxsize, maxiter):
 
 	cboxtl = ((cboxctr[0]-int(cboxsize[0]/2)) , (cboxctr[1]-int(cboxsize[1]/2)))
@@ -68,34 +70,36 @@ def findangle(spot1, spot2):
 
 desiredspotangle = 49+180	#desired sunspot angle in degrees
 
-for i in range (1,400):		#image index range
+def do_sunrot(filename, dir1, dir2):
+	global infile
+	infile = "img/" + dir1 + "/" + filename
+	outfile = "img/" + dir2 + "/" + filename
+	try:
+		im = Image.open(infile)
+		# print "\nFile %s (%s, %s, %d x %d)" % (infile, im.format, im.mode, im.size[0], im.size[1])
 
-	infile = "img/crop/sun-%04d.tif" % i
-	outfile = "img/rot/sun-%04d.tif" % i
+		imtrim = im
+		immono = ImageOps.equalize(ImageOps.grayscale(imtrim))
+		imneg = ImageOps.invert(imtrim)
+		global imthresh
+		imthresh = imneg.point(sun.thresh1)
 
-	im = Image.open(infile)
-	print "\nFile %s (%s, %s, %d x %d)" % (infile, im.format, im.mode, im.size[0], im.size[1])
+		spot1 = findspot( (1075,845), (350,350), (64,64), 10 )
+		print "Sunspot 1 is at (%f, %f)" % (spot1[0], spot1[1])
+		spot2 = findspot( (845,1105), (350,350), (64,64), 10 )
+		print "Sunspot 2 is at (%f, %f)" % (spot2[0], spot2[1])
 
-	imtrim = im
-	immono = ImageOps.equalize(ImageOps.grayscale(imtrim))
-	imneg = ImageOps.invert(imtrim)
-	imthresh = imneg.point(sun.thresh1)
+		spotangle = findangle(spot1,spot2)
+		print "Angle between sunspots is %f degs" % spotangle
 
-	spot1 = findspot( (1075,845), (350,350), (64,64), 10 )
-	print "Sunspot 1 is at (%f, %f)" % (spot1[0], spot1[1])
-	spot2 = findspot( (845,1105), (350,350), (64,64), 10 )
-	print "Sunspot 2 is at (%f, %f)" % (spot2[0], spot2[1])
+		print "Rotating..."
+		im = imtrim.rotate((desiredspotangle-spotangle), Image.BICUBIC, 0)
 
-	spotangle = findangle(spot1,spot2)
-	print "Angle between sunspots is %f degs" % spotangle
+		print "Trimming..."
+		im = sun.bbcrop(im, 160)
 
-	print "Rotating..."
-	im = imtrim.rotate((desiredspotangle-spotangle), Image.BICUBIC, 0)
-
-	print "Trimming..."
-	im = sun.bbcrop(im, 160)
-
-	print "Saving to %s" % outfile
-	im.save(outfile)
-
-print "Done!\n"
+		# print "Saving to %s" % outfile
+		im.save(outfile)
+	except:
+		print "Error occured while processing %s" % (infile)
+		f.write("%s\n" % (infile))
